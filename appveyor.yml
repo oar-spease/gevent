@@ -41,6 +41,13 @@ environment:
     # a later point release.
 
     # 64-bit
+    - PYTHON: "C:\\pypy3.7-v7.3.7-win64"
+      PYTHON_ID: "pypy3"
+      PYTHON_EXE: pypy3
+      PYTHON_VERSION: "3.7.x"
+      PYTHON_ARCH: "64"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+
     - PYTHON: "C:\\pypy2.7-v7.3.6-win64"
       PYTHON_ID: "pypy"
       PYTHON_EXE: pypy
@@ -167,6 +174,12 @@ install:
           (New-Object Net.WebClient).DownloadFile('https://downloads.python.org/pypy/pypy2.7-v7.3.6-win64.zip', "${env:PYTMP}\pypy2-v7.3.6-win64.zip");
         }
         7z x -y "${env:PYTMP}\pypy2-v7.3.6-win64.zip" -oC:\ | Out-Null;
+      }
+      elseif ("${env:PYTHON_ID}" -eq "pypy3") {
+        if (!(Test-Path "${env:PYTMP}\pypy3.7-v7.3.7-win64.zip")) {
+          (New-Object Net.WebClient).DownloadFile("https://downloads.python.org/pypy/pypy3.7-v7.3.7-win64.zip", "${env:PYTMP}\pypy3.7-v7.3.7-win64.zip");
+        }
+        7z x -y "${env:PYTMP}\pypy3.7-v7.3.7-win64.zip" -oC:\ | Out-Null;
       }
       elseif (-not(Test-Path($env:PYTHON))) {
         & appveyor\install.ps1;
